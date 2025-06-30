@@ -27,10 +27,12 @@ st.title('Litte Pisces sales monitor')
 ### Side bar elements 
 with st.sidebar:
 
-    with st.expander("Forecast Inputs"):
+    st.markdown('### Select inputs')
+
+    with st.expander("Forecasting inputs"):
 
         day = st.date_input(
-            "Which day would you like to forecast?",
+            "Forecast date",
             format='DD.MM.YYYY'
         )
 
@@ -50,11 +52,6 @@ with st.sidebar:
             "What is the forecasted snow level?", value=0
         )
 
-        # day_of_the_week = st.selectbox(
-        #     "Which day of the week is it?", 
-        #     ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-        # )
-
         is_long_weekend = st.selectbox(
             "Is it a long weekend?", 
             (False, True)
@@ -70,21 +67,23 @@ with st.sidebar:
             (False, True)
         )
 
-        # season = st.selectbox(
-        #     "What season is it?", 
-        #     ("Winter", "Spring", "Summer", "Fall")
-        # )
-
         has_pop_up = st.selectbox(
         "Will there be a pop up?", 
         (False, True)
         )
 
-    with st.expander("Dashboard Inputs"):
-         dashboard_range = st.selectbox(
-              "Select day range for dashboard",
+    with st.expander("Metric inputs"):
+         metric_range = st.selectbox(
+              "Select day range for KPIs",
               (7, 14, 30)
          )
+    
+    with st.expander("Graph inputs"):
+        graph_range = st.selectbox(
+              "Select day range for trend graphs",
+              (30, 90, 180)
+         )
+         
 
 ### load pickle 
 with open("lr_pipe.pickle", 'rb') as f:
@@ -113,57 +112,135 @@ input_df = pd.DataFrame(data, index=[0])
 prediction = lr_pipe.predict(input_df)[0].astype(int)
 
 ### loading in data
-total_sales_df = pd.read_csv('/Users/alexwong/Desktop/little_picses/restaurant_sales_forecast/data/processed/total_sales_df')
-combined_df = pd.read_csv('/Users/alexwong/Desktop/little_picses/restaurant_sales_forecast/data/processed/combined_df', index_col=0, parse_dates=True)
+combined_df = pd.read_csv('data/processed/combined_df', index_col=0, parse_dates=True)
 sales_df = combined_df[['total_sales_normalized', 'item_A_sales','item_B_sales', 'item_C_sales']]
 
-### get sales data
+### define plotting functions 
 
-sales_graph = px.line(
-    sales_df.iloc[-dashboard_range:,:], 
-    title=f'Daily sales - last {dashboard_range} days',
-    labels={
-        'date': 'Date',
-        'total_sales_normalized': 'Sales ($)'
-    }
+def make_line_graph(input_df, range, width=400, height=300): 
+    graph = px.line(
+        input_df.iloc[-range:,:], 
+        width=width,   # set width in pixels
+        height=height   # set height in pixels
 )
+    return graph
 
-orders_graph = px.line(
-    combined_df[['in_store_orders']].iloc[-dashboard_range:,:], 
-    title=f'Daily orders - last {dashboard_range} days',
-    labels={
-        'date': 'Date',
-        'total_sales_normalized': 'Orders'
-    }
-)
+def make_trend_graph(input_df, range, width=400, height=300): 
+    graph = px.line(
+        input_df.iloc[-range:].resample("W").mean(),
+        width=width,
+        height=height
+    )
+    
+    return graph
 
-avg_orders = combined_df['in_store_orders'].iloc[-dashboard_range:].mean().astype(int)
-avg_sales = combined_df['total_sales_normalized'].iloc[-dashboard_range:].mean().astype(int)
-avg_tips = combined_df['tips_normalized'].iloc[-dashboard_range:].mean().astype(int)
 
-total_sales = combined_df['total_sales_normalized'].iloc[-dashboard_range:].sum()
-total_orders = combined_df['in_store_orders'].iloc[-dashboard_range:].sum()
+### average figures 
+avg_orders = combined_df['in_store_orders'].iloc[-metric_range:].mean().astype(int)
+avg_sales = combined_df['total_sales_normalized'].iloc[-metric_range:].mean().astype(int)
+avg_tips = combined_df['tips_normalized'].iloc[-metric_range:].mean().astype(int)
 
+total_sales = combined_df['total_sales_normalized'].iloc[-metric_range:].sum()
+total_orders = combined_df['in_store_orders'].iloc[-metric_range:].sum()
 avg_sales_per_order = total_sales/total_orders
 
+### deltas compared to previous period 
+avg_orders_last_period = combined_df['in_store_orders'].iloc[-metric_range*2:-metric_range].mean().astype(int)
+avg_sales_last_period = combined_df['total_sales_normalized'].iloc[-metric_range*2:-metric_range].mean().astype(int)
+avg_tips_last_period = combined_df['tips_normalized'].iloc[-metric_range*2:-metric_range].mean().astype(int)
+
+avg_orders_delta = avg_orders - avg_orders_last_period
+avg_sales_delta = avg_sales - avg_sales_last_period
+avg_tips_delta = avg_tips - avg_tips_last_period
+
+total_sales_last_period = combined_df['total_sales_normalized'].iloc[-metric_range*2:-metric_range].sum()
+total_orders_last_period = combined_df['in_store_orders'].iloc[-metric_range*2:-metric_range].sum()
+avg_sales_per_order_last_period = total_sales_last_period / total_orders_last_period
+avg_sales_per_order_delta = avg_sales_per_order - avg_sales_per_order_last_period
+
+### prediction 
+st.markdown('### Sales forecast')
+st.metric(label= "Forecasted sales based on inputs", value=f"${prediction:,}")
+
+
 ### metric boxes 
-col1, col2, col3, col4 = st.columns(4)
+st.markdown('### KPIs')
 
-with col1:
-      st.metric(label= f"Average daily sales - last {dashboard_range} days", value=f"${avg_sales:,}")
+col_1_1, col_1_2, col_1_3, col_1_4 = st.columns(4)
 
-with col2: 
-     st.metric(label= f"Average daily tips - last {dashboard_range} days", value=f"${avg_tips:,}")
+with col_1_1:
+      st.metric(label= f"Average daily sales - last {metric_range} days", value=f"${avg_sales:,}", delta=int(avg_sales_delta), border=True)
 
-with col3:
-     st.metric(label= f"Average daily orders - last {dashboard_range} days", value=f"{avg_orders:,}")
+with col_1_2: 
+     st.metric(label= f"Average daily tips - last {metric_range} days", value=f"${avg_tips:,}", delta=int(avg_tips_delta), border=True)
 
-with col4: 
-     st.metric(label= f"Sales per order - last {dashboard_range} days", value=f"${avg_sales_per_order.round(2):,}")
+with col_1_3:
+     st.metric(label= f"Average daily orders - last {metric_range} days", value=f"{avg_orders:,}", delta=int(avg_orders_delta), border=True)
 
-st.plotly_chart(sales_graph)
-st.plotly_chart(orders_graph)
+with col_1_4: 
+     st.metric(label= f"Sales per order - last {metric_range} days", value=f"${avg_sales_per_order.round(2):,}", delta=round(avg_sales_per_order_delta, 1), border=True)
 
-#st.line_chart(last_30_df, x='date', y = 'total_sales_normalized')
 
-#st.line_chart(last_30_df, x='date', y = ['item_A_sales', 'item_B_sales', 'item_C_sales'])
+### line graphs - sales and orders 
+
+# sales_graph = make_line_graph(sales_df, graph_range)
+# sales_graph.update_layout(
+#     title = f'Sales - Last {graph_range} days',
+#     xaxis_title='Date',
+#     yaxis_title='Sales ($)',
+#     legend=dict(
+#     orientation='h',         # horizontal
+#     yanchor='top',
+#     y=-0.5,                  # adjust vertical position
+#     xanchor='center',
+#     x=0.5                    # center the legend
+#     )
+# )
+
+# orders_graph = make_line_graph(combined_df[['in_store_orders']], graph_range)
+# orders_graph.update_layout(
+#     title = f'Orders - Last {graph_range} days',
+#     xaxis_title='Date',
+#     yaxis_title='Number of orders',
+#     showlegend=False
+# )
+# col_2_1, col_2_2 = st.columns(2)
+
+# with col_2_1:   
+#     st.plotly_chart(sales_graph)
+# with col_2_2:
+#     st.plotly_chart(orders_graph)
+
+### line graphs - trends 
+
+sales_trend_graph = make_trend_graph(sales_df, graph_range, height=320)
+sales_trend_graph.update_layout(
+    title = f'Weekly sales trend - last {graph_range} days',
+    xaxis_title='Date',
+    yaxis_title='Sales ($)',
+    legend=dict(
+    orientation='h',         # horizontal
+    yanchor='top',
+    y=-0.5,                  # adjust vertical position
+    xanchor='center',
+    x=0.5                    # center the legend
+    )
+)
+
+orders_trend_graph = make_trend_graph(combined_df[['in_store_orders']], graph_range, height=270)
+orders_trend_graph.update_layout(
+    title = f'Weekly orders trend - last {graph_range} days',
+    xaxis_title='Date',
+    yaxis_title='Orders',
+    showlegend=False
+)
+
+col_3_1, col_3_2 = st.columns(2)
+
+with col_3_1:
+    st.plotly_chart(sales_trend_graph)
+
+with col_3_2:
+    st.plotly_chart(orders_trend_graph)
+
+
