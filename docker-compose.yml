@@ -1,0 +1,13 @@
+services:
+  sales_monitor:
+    image: sales_monitor_app
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/home/jovyan
+    deploy:
+      resources:
+        limits:
+          memory: 5G
+    platform: linux/amd64
