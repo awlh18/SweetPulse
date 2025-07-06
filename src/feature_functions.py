@@ -20,7 +20,10 @@ def get_season(dates: pd.Series) -> pd.Series:
         else:
             return 'Fall'
 
-    return dates.apply(season_of_date).rename("season")
+    if isinstance(dates, pd.Series):
+        return dates.apply(season_of_date).rename("season")
+    else:
+        return season_of_date(dates)
 
 def is_HCF(HCF_sales):
 

@@ -28,7 +28,7 @@ def main():
     ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],  # day_of_week
     [False, True]  # is_holiday
     ]
-    drop_features = ['tips_normalized', 'in_store_orders', 'taiyaki_sales', 'soft_serve_sales', 'drink_sales', 'HCF_sales', 'type_of_day']
+    drop_features = ['tips_normalized', 'in_store_orders', 'item_A_sales', 'item_B_sales', 'item_C_sales', 'HCF_sales', 'type_of_day']
 
     preprocessor = make_column_transformer(
     (OneHotEncoder(drop='first', categories=category_orders), categorical_features),

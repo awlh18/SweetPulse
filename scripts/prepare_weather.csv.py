@@ -2,28 +2,27 @@ import os
 import sys
 import numpy as np
 import pandas as pd
+import glob
 import click
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.data_validation import _validate_weather_df
 
-@click.command()
-@click.option('--weather_file', type=str, required=True, help='Excel file name')
-def main(weather_file):
+# @click.command()
+# @click.option('--weather_file', type=str, required=True, help='Excel file name')
+def main():
 
-    weather_root_dir = "data/inputs/weather/"
-    weather_file_path = weather_root_dir + weather_file
+    weather_file_list = glob.glob("data/inputs/weather/*.csv")
 
-    destination_dir = "data/processed/"
     destination_path = "data/processed/weather.csv"
 
     weather_columns = ['date','avg_temperature', 'rain', 'snow']
 
-    if not os.path.exists(weather_file_path):
-        raise FileNotFoundError("The specificed weather file not found. Did you specify the right file?")
+    if len(weather_file_list) == 0:
+        raise FileNotFoundError("No weather data found in inputs/weather.")
 
-    weather_df = pd.read_csv(weather_file_path)
+    weather_df = pd.read_csv(weather_file_list[0])
     weather_df = weather_df[weather_columns]
     weather_df['date'] = pd.to_datetime(weather_df['date'])
     
