@@ -1,3 +1,18 @@
+"""
+This script loads the preprocessed sales and weather data, merge them by date, engineer
+features for model-training, validate data types and strcuture, drop unusual days, and peform 
+train/test split. 
+
+Outputs:
+    - `data/processed/combined.csv`: Cleaned and feature-enhanced dataset.
+    - `data/modelling/train.csv`: Training dataset (all but last 30 days).
+    - `data/modelling/test.csv`: Test dataset (last 30 days).
+
+Usage:
+    To be called with 'make all' command. 
+
+"""
+
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -26,28 +41,28 @@ def main():
 
     combined_df = pd.merge(sales_df, weather_df, on='date', how='left')
 
-    #create features 
+    # create features 
     combined_df['is_long_weekend']=is_long_weekend(combined_df['type_of_day'])
     combined_df['is_HCF']=is_HCF(combined_df['HCF_sales'])
     combined_df['is_holiday']=is_holiday(combined_df['type_of_day'])
     combined_df['season']=get_season(combined_df['date'])
     combined_df['day_of_week']=combined_df['date'].dt.day_name()
 
-    #set categories
+    # set categories
     combined_df['day_of_week'] = pd.Categorical(combined_df['day_of_week'], categories=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])
     combined_df['season'] = pd.Categorical(combined_df['season'], categories=['Winter', 'Spring', 'Summer', 'Fall'])
 
-    #data validation
+    # data validation
     _validate_combined_df(combined_df)
 
-    #drop unusual days
+    # drop unusual days
     unusual_days=combined_df[combined_df['type_of_day']=='Unusual'].index.to_list()
     combined_df=combined_df.drop(index=unusual_days)
 
     combined_df.to_csv('data/processed/combined.csv', index=False)
     print("Successfully generated combined.csv!")
 
-    #train, test split
+    # train, test split
     train_df=combined_df.iloc[:-30]
     test_df=combined_df.iloc[-30:]
     

@@ -1,3 +1,20 @@
+"""
+This script loads the preprocessed training and test datasets, and the trained
+Linear Regression model pipeline. It evaluates model performance, extracts feature
+coefficients, computes prediction errors, and generates graph to assess model fit.
+
+Outputs:
+    - `results/trained_coef_total_sales.csv`: Sorted list of model coefficients.
+    - `results/mae_grouped_total_sales.csv`: MAE and error percentage by day of week.
+    - `results/lr_plot.pkl`: Plotly figure showing model predictions vs. actuals.
+    - `results/resid_fit_plot.pkl`: Residuals vs. fitted values plot.
+    - `results/resid_dist_plot.pkl`: Distribution of residuals.
+
+Usage:
+    To be called with 'make all' command. 
+
+"""
+
 import os
 import sys
 import numpy as np
@@ -100,7 +117,7 @@ def main():
     with open(resid_fit_plot_path, 'wb') as f:
         pickle.dump(resid_fig, f)
 
-    #prepare residual distribution plot 
+    # prepare residual distribution plot 
     resid_dist_fig = px.histogram(train_results_df, x='resid', marginal='violin', nbins=35, width=650)
 
     with open(resid_dist_plot_path, 'wb') as f:

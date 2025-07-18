@@ -1,3 +1,14 @@
+"""
+This script loads the train dataset and trains the linear regression pipeline 
+for predicting total daily sales.
+
+Outputs:
+    - 'model/lr_pipe_total_sales.pkl': Trained linear regression pipeline 
+
+Usage:
+    To be called with 'make all' command. 
+"""
+
 import os
 import sys
 import numpy as np
@@ -9,6 +20,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import make_pipeline
 
 def main():
+
     train_path = 'data/modelling/train.csv'
     model_path = 'model/lr_pipe_total_sales.pkl'
 
