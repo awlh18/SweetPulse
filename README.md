@@ -1,25 +1,38 @@
-# 📦 Streamlit App Starter Kit 
-```
-⬆️ (Replace above with your app's name)
-```
+# SweetPulse
 
-Description of the app ...
+Welcome to **SweetPulse**! 
 
-## Demo App
+**SweetPulse** is a forecasting and analytics tool designed to help Vancouver-based restaurants and cafés make data-informed business decisions. It provides daily sales and order volume predictions based on weather forecasts in Metro Vancouver, allowing owners to better plan day-to-day operations.
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://app-starter-kit.streamlit.app/)
+SweetPulse also tracks key business metrics and provides interactive visualizations of sales trends down to the item level, enabling users to identify top-performing products and uncover actionable patterns in their sales data.
 
-## GitHub Codespaces
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/app-starter-kit?quickstart=1)
+### How to Get Started Locally
 
-## Section Heading
+If you're interested in running the app locally or contributing to its development, follow these high-level steps:
 
-This is filler text, please replace this with text for this section.
+1.  **Clone the repository** to your local machine.
 
-## Further Reading
+    ``` bash
+    git clone git@github.com:UBC-MDS/DSCI-532_2025_13_Maple-Eagle-Trade-Tracker.git
+    ```
 
-This is filler text, please replace this with a explanatory text about further relevant resources for this repo
-- Resource 1
-- Resource 2
-- Resource 3
+2.  **Install dependencies** We have provided a environment.yaml file to help you get started. You can install the dependencies by running:
+
+    ``` bash
+    conda env create --file environment.yml
+    conda activate sweet_pulse
+    ```
+
+3.  **Process data and train forecasting models** Load the latest sales data and weather in the xxx directory and run the following: 
+
+    ``` bash
+    make clean
+    make all
+    ```
+
+4.  **Run the app** Once the dependencies are installed, you can run the dashboard locally with **the root of this repo** set as the current directory:
+
+    ``` bash
+    streamlit run app.py
+    ```
