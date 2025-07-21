@@ -1,3 +1,15 @@
+"""
+This script reads the first available Excel file from the `data/inputs/sales/` directory, 
+validates its structure and data types, rounds numeric columns to two decimal places, 
+and exports the result as a CSV file for downstream processing.
+
+Outputs:
+    - `data/processed/sales.csv`: Cleaned sales dataset for downstream use.
+
+Usage:
+    To be called with 'make all' command. 
+"""
+
 import os
 import sys
 import numpy as np
@@ -20,7 +32,7 @@ def main():
     if len(excel_file_list) == 0:
         raise FileNotFoundError("No sales data found in inputs/sales.")
 
-    excel_df = pd.read_excel(excel_file_list[0], sheet_name='raw')
+    excel_df = pd.read_excel(excel_file_list[0], sheet_name='inputs')
     
     _validate_excel_df(excel_df)
 

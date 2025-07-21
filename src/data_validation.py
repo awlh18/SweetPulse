@@ -3,6 +3,26 @@ import pandera as pa
 
 
 def _validate_excel_df(excel_df):
+    """
+    Validate the structure and data types of excel_df.
+    To be used with `scripts/prepare_sales.csv.py`.
+
+    Parameters
+    ----------
+    excel_df: pd.DataFrame
+        The DataFrame (excel_df) to validate.
+
+    Returns
+    -------
+    None
+        This function does not return anything. It will raise a SchemaError
+        if the DataFrame does not conform to the expected schema.
+
+    Raises
+    ------
+    pandera.errors.SchemaError
+        If the DataFrame does not match the expected schema definition.
+    """
 
     schema_features_df = pa.DataFrameSchema({
     "date": pa.Column(pa.DateTime),
@@ -20,6 +40,26 @@ def _validate_excel_df(excel_df):
     schema_features_df.validate(excel_df)
 
 def _validate_weather_df(weather_df):
+    """
+    Validate the structure and data types of weather_df.
+    To be used with `scripts/prepare_weather.csv.py`.
+
+    Parameters
+    ----------
+    weather_df: pd.DataFrame
+        The DataFrame (weather_df) to validate.
+
+    Returns
+    -------
+    None
+        This function does not return anything. It will raise a SchemaError
+        if the DataFrame does not conform to the expected schema.
+
+    Raises
+    ------
+    pandera.errors.SchemaError
+        If the DataFrame does not match the expected schema definition.
+    """
 
     schema_features_df = pa.DataFrameSchema({
     "date": pa.Column(pa.DateTime, nullable=True),
@@ -31,6 +71,26 @@ def _validate_weather_df(weather_df):
     schema_features_df.validate(weather_df)
 
 def _validate_combined_df(combined_df):
+    """
+    Validate the structure and data types of combined_df.
+    To be used with `scripts/prepare_combined.csv.py`.
+
+    Parameters
+    ----------
+    combined_df: pd.DataFrame
+        The DataFrame (combined_df) to validate.
+
+    Returns
+    -------
+    None
+        This function does not return anything. It will raise a SchemaError
+        if the DataFrame does not conform to the expected schema.
+
+    Raises
+    ------
+    pandera.errors.SchemaError
+        If the DataFrame does not match the expected schema definition.
+    """
 
     schema_features_df = pa.DataFrameSchema({
     "date": pa.Column(pa.DateTime),
