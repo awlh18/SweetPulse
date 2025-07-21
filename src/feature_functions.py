@@ -1,11 +1,12 @@
 # Core libraries
 import numpy as np
 import pandas as pd
+import datetime
 from typing import Union
 import os
 import sys
 
-def get_season(dates: Union[pd.Timestamp, pd.Series]) ->  Union[pd.Timestamp, pd.Series]:
+def get_season(dates: Union[datetime.date, pd.Series]) ->  Union[str, pd.Series]:
     """
     Assign season to a datetime value or a Series of datetime values.
 
@@ -16,28 +17,28 @@ def get_season(dates: Union[pd.Timestamp, pd.Series]) ->  Union[pd.Timestamp, pd
 
     Parameters
     ----------
-    dates : pd.Series or pd.Timestamp
-        - A pd.Series of datetime objects or a single datetime (pd.Timestamp).
+    dates : pd.Series or datetime.date
+        - A pd.Series of datetime objects or a single datetime (datetime.date).
 
     Returns
     -------
     str or pd.Series
-        - If input is a single Timestamp: returns the season name as a string.
+        - If input is a single datetime.date: returns the season name as a string.
         - If input is a pd.Series: returns a Series of season names (str), with the same index and named 'season'.
     
     Raises
     ------
     TypeError
-        If the input is neither a pd.Timestamp nor a pd.Series.
+        If the input is neither a datetime.date nor a pd.Series.
 
     Examples
     --------
-    >>> get_season(pd.Series([pd.Timestamp('2024-01-15'), pd.Timestamp('2024-07-10')]))
+    >>> get_season(pd.Series([datetime.date(2024, 1, 15), datetime.date(2024, 7, 10)]))
     0    Winter
     1    Summer
     Name: season, dtype: object
 
-    >>> get_season(pd.Timestamp('2024-10-10'))
+    >>> get_season(datetime.date(2024, 10, 10))
     'Fall'
     """
 
@@ -54,10 +55,10 @@ def get_season(dates: Union[pd.Timestamp, pd.Series]) ->  Union[pd.Timestamp, pd
 
     if isinstance(dates, pd.Series):
         return dates.apply(_season_of_date).rename("season")
-    elif isinstance(dates, pd.Timestamp):
+    elif isinstance(dates, datetime.date):
         return _season_of_date(dates)
     else:
-        raise TypeError(f"Input must be pd.Timestamp or pd.Series but got {type(date)}")
+        raise TypeError(f"Input must be datetime.date or pd.Series but got {type(dates)}")
 
 def is_HCF(HCF_sales: Union[float, pd.Series]) -> Union[bool, pd.Series]:
     """
