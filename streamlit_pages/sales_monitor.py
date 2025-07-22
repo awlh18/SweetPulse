@@ -66,11 +66,6 @@ with st.sidebar:
               (30, 90, 180)
          )
          
-
-# load pickle 
-with open("model/lr_pipe_total_sales.pkl", 'rb') as f:
-        lr_pipe = pickle.load(f)
-
 # Making prediction 
 day_of_the_week = day.strftime('%A')
 season = get_season(day)
@@ -87,8 +82,6 @@ data = {
  'is_holiday': is_holiday}
 
 input_df = pd.DataFrame(data, index=[0])
-
-prediction = lr_pipe.predict(input_df)[0].astype(int)
 
 # loading in sales data for plots
 sales_df = pd.read_csv('data/processed/sales.csv', index_col=0, parse_dates=True)
@@ -111,9 +104,42 @@ def make_trend_graph(input_df, range, width=400, height=300):
     
     return graph
 
-# prediction 
+# show predictions
+
+# load pickles 
+with open("model/lr_pipe_total_sales.pkl", 'rb') as f:
+        lr_pipe_total = pickle.load(f)
+
+with open("model/lr_pipe_item_A_sales.pkl", 'rb') as f:
+        lr_pipe_A = pickle.load(f)
+
+with open("model/lr_pipe_item_B_sales.pkl", 'rb') as f:
+        lr_pipe_B = pickle.load(f)
+
+with open("model/pr_pipe_orders.pkl", 'rb') as f:
+        pr_pipe = pickle.load(f)
+
+prediction_total = lr_pipe_total.predict(input_df)[0].astype(int)
+prediction_A = lr_pipe_A.predict(input_df)[0].astype(int)
+prediction_B = lr_pipe_B.predict(input_df)[0].astype(int)
+prediction_order = pr_pipe.predict(input_df)[0].astype(int)
+
 st.markdown('### Forecasts')
-st.metric(label= "Forecasted sales based on inputs", value=f"${prediction:,}")
+st.markdown('Based on forecasting input selected')
+
+col_1_1, col_1_2, col_1_3, col_1_4 = st.columns(4)
+
+with col_1_1:
+    st.metric(label= "Total sales", value=f"${prediction_total:,}", border=True)
+
+with col_1_2:
+    st.metric(label= "Item A sales", value=f"${prediction_A:,}", border=True)
+
+with col_1_3:
+    st.metric(label= "Item B sales", value=f"${prediction_B:,}", border=True)
+
+with col_1_4:
+    st.metric(label= "Total orders", value=f"{prediction_order}", border=True)
 
 # metric boxes 
 
@@ -144,18 +170,18 @@ st.markdown(f'#### Key Performance Metrics')
 st.markdown(f'###### Last {metric_range} days')
 st.markdown('(Delta vs. preceding period)')
 
-col_1_1, col_1_2, col_1_3, col_1_4 = st.columns(4)
+col_2_1, col_2_2, col_2_3, col_2_4 = st.columns(4)
 
-with col_1_1:
+with col_2_1:
       st.metric(label= f"Average daily sales", value=f"${avg_sales:,}", delta=int(avg_sales_delta), border=True)
 
-with col_1_2: 
+with col_2_2: 
      st.metric(label= f"Average daily tips", value=f"${avg_tips:,}", delta=int(avg_tips_delta), border=True)
 
-with col_1_3:
+with col_2_3:
      st.metric(label= f"Average daily orders", value=f"{avg_orders:,}", delta=int(avg_orders_delta), border=True)
 
-with col_1_4: 
+with col_2_4: 
      st.metric(label= f"Sales per order", value=f"${avg_sales_per_order.round(2):,}", delta=round(avg_sales_per_order_delta, 1), border=True)
 
 # line graphs - weekly sales and order trends 
@@ -194,7 +220,6 @@ with col_3_2:
     st.plotly_chart(orders_trend_graph)
 
 # line graphs - core items proportion trends 
-
 weekly_sales_df = sales_df.iloc[-graph_range:].resample('W').mean(numeric_only=True)
 weekly_sales_df['A_proportion'] = weekly_sales_df['item_A_sales'] / weekly_sales_df['total_sales_normalized']
 weekly_sales_df['B_proportion'] = weekly_sales_df['item_B_sales'] / weekly_sales_df['total_sales_normalized']
