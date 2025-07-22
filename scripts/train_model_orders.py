@@ -3,7 +3,7 @@ This script loads the train dataset and trains the poisson regression pipeline
 for predicting daily order volumes.
 
 Outputs:
-    - 'model/lr_pipe_orders.pkl': Trained poisson regression pipeline 
+    - 'model/pr_pipe_orders.pkl': Trained poisson regression pipeline 
 
 Usage:
     To be called with 'make all' command. 
@@ -22,7 +22,7 @@ from sklearn.pipeline import make_pipeline
 def main():
 
     train_path = 'data/modelling/train.csv'
-    model_path = 'model/lr_pipe_orders.pkl'
+    model_path = 'model/pr_pipe_orders.pkl'
 
     if not os.path.exists(train_path):
         raise FileNotFoundError(f"{train_path} does not exist")
