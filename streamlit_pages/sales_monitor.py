@@ -57,13 +57,15 @@ with st.sidebar:
     with st.expander("KPI inputs"):
          metric_range = st.selectbox(
               "Select day range for KPIs",
-              (7, 14, 30, 90, 180)
+              (7, 14, 30, 90, 180),
+              index=2
          )
     
     with st.expander("Graph inputs"):
         graph_range = st.selectbox(
               "Select day range for trend graphs",
-              (30, 90, 180)
+              (30, 90, 180),
+              index=2
          )
          
 # Making prediction 
