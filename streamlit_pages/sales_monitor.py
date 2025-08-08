@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 import pickle
 import datetime
 from sklearn.metrics import mean_absolute_error
@@ -62,10 +64,9 @@ with st.sidebar:
          )
     
     with st.expander("Graph inputs"):
-        graph_range = st.selectbox(
-              "Select day range for trend graphs",
-              (30, 90, 180),
-              index=2
+        aggregation_level = st.selectbox(
+              "Select aggregation level for trend graphs",
+              ('Weekly', 'Monthly')
          )
          
 # Making prediction 
@@ -97,9 +98,9 @@ def make_line_graph(input_df, range, width=400, height=300):
 )
     return graph
 
-def make_trend_graph(input_df, range, width=400, height=300): 
+def make_trend_graph(input_df, agg, width=400, height=300): 
     graph = px.line(
-        input_df.iloc[-range:].resample("W").mean(),
+        input_df.resample(agg).mean(),
         width=width,
         height=height
     )
@@ -186,14 +187,22 @@ with col_2_3:
 with col_2_4: 
      st.metric(label= f"Sales per order", value=f"${avg_sales_per_order.round(2):,}", delta=round(avg_sales_per_order_delta, 1), border=True)
 
-# line graphs - weekly sales and order trends 
+# line graph - weekly sales trends 
+
+if aggregation_level == 'Weekly':
+    agg='W'
+else:
+    agg='M'
+
 core_product_sales = sales_df[['total_sales_normalized', 'item_A_sales', 'item_B_sales', 'item_C_sales']]
 
-sales_trend_graph = make_trend_graph(core_product_sales, graph_range, height=320)
+sales_trend_graph = make_trend_graph(core_product_sales, agg, height=320)
 sales_trend_graph.update_layout(
-    title=f'Weekly sales trend - last {graph_range} days',
+    title=f'{aggregation_level} sales trend',
     xaxis_title='Date',
     yaxis_title='Total sales ($)',
+    width=1230,
+    height=500,
     legend=dict(
     orientation='h',         # horizontal
     yanchor='top',
@@ -204,14 +213,37 @@ sales_trend_graph.update_layout(
 )
 sales_trend_graph.update_yaxes( gridcolor="lightgrey")
 
-orders_trend_graph = make_trend_graph(sales_df[['in_store_orders']], graph_range, height=270)
-orders_trend_graph.update_layout(
-    title=f'Weekly orders trend - last {graph_range} days',
-    xaxis_title='Date',
-    yaxis_title='Orders',
-    showlegend=False
+
+#  line graph - number of orders vs sales per order trend 
+
+sales_df['sales_per_order'] = sales_df['total_sales_normalized'] / sales_df['in_store_orders']
+grouped_df = sales_df.resample(agg).mean(numeric_only=True)
+sales_sop = make_subplots(specs=[[{"secondary_y": True}]])
+sales_sop.add_trace(go.Line(x=grouped_df.index, y=grouped_df['in_store_orders'], name='number of orders', mode='lines'))
+sales_sop.add_trace(go.Line(x=grouped_df.index, y=grouped_df['sales_per_order'], name='sales per order', mode='lines', line=dict(color='red')), 
+                    secondary_y=True)
+
+
+sales_sop.update_layout(
+    title=f'{aggregation_level} orders vs. sales per order',
+    yaxis=dict(
+        title='Orders'
+    ),
+    yaxis2=dict(
+        title='Sales per order'
+    ),
+    width=1230,
+    height=500,
+    legend=dict(
+        orientation='h',         # horizontal
+        yanchor='top',
+        y=-0.5,                  # adjust vertical position
+        xanchor='center',
+        x=0.5                    # center the legend
+    )
 )
-orders_trend_graph.update_yaxes( gridcolor="lightgrey")
+
+sales_sop.update_yaxes( gridcolor="lightgrey")
 
 col_3_1, col_3_2 = st.columns(2)
 
@@ -219,32 +251,5 @@ with col_3_1:
     st.plotly_chart(sales_trend_graph)
 
 with col_3_2:
-    st.plotly_chart(orders_trend_graph)
+    st.plotly_chart(sales_sop)
 
-# line graphs - core items proportion trends 
-weekly_sales_df = sales_df.iloc[-graph_range:].resample('W').mean(numeric_only=True)
-weekly_sales_df['A_proportion'] = weekly_sales_df['item_A_sales'] / weekly_sales_df['total_sales_normalized']
-weekly_sales_df['B_proportion'] = weekly_sales_df['item_B_sales'] / weekly_sales_df['total_sales_normalized']
-weekly_sales_df['C_proportion'] = weekly_sales_df['item_C_sales'] / weekly_sales_df['total_sales_normalized']
-
-proportion_graph = px.line(
-    weekly_sales_df[['A_proportion', 'B_proportion', 'C_proportion']], 
-    width=400, 
-    height=300)
-
-
-proportion_graph.update_layout(
-    title=f'Sales mix (weekly sales) - last {graph_range} days',
-    xaxis_title='Date',
-    yaxis_title='Percentage',
-    legend=dict(
-    orientation='h',         # horizontal
-    yanchor='top',
-    y=-0.5,                  # adjust vertical position
-    xanchor='center',
-    x=0.5                    # center the legend
-    )
-)
-proportion_graph.update_yaxes( gridcolor="lightgrey")
-
-st.plotly_chart(proportion_graph)
