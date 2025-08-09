@@ -100,7 +100,7 @@ def make_line_graph(input_df, range, width=400, height=300):
 
 def make_trend_graph(input_df, agg, width=400, height=300): 
     graph = px.line(
-        input_df.resample(agg).mean(),
+        input_df.resample(agg).mean().round(1),
         width=width,
         height=height
     )
@@ -198,15 +198,17 @@ core_product_sales = sales_df[['total_sales_normalized', 'item_A_sales', 'item_B
 
 sales_trend_graph = make_trend_graph(core_product_sales, agg, height=320)
 sales_trend_graph.update_layout(
-    title=f'{aggregation_level} sales trend',
+    title=dict(
+        text=f'{aggregation_level} sales trend',
+        y=0.925),
     xaxis_title='Date',
     yaxis_title='Total sales ($)',
     width=1230,
-    height=500,
+    height=400,
     legend=dict(
     orientation='h',         # horizontal
     yanchor='top',
-    y=-0.5,                  # adjust vertical position
+    y=-0.1,                  # adjust vertical position
     xanchor='center',
     x=0.5                    # center the legend
     )
@@ -217,7 +219,7 @@ sales_trend_graph.update_yaxes( gridcolor="lightgrey")
 #  line graph - number of orders vs sales per order trend 
 
 sales_df['sales_per_order'] = sales_df['total_sales_normalized'] / sales_df['in_store_orders']
-grouped_df = sales_df.resample(agg).mean(numeric_only=True)
+grouped_df = sales_df.resample(agg).mean(numeric_only=True).round(1)
 sales_sop = make_subplots(specs=[[{"secondary_y": True}]])
 sales_sop.add_trace(go.Line(x=grouped_df.index, y=grouped_df['in_store_orders'], name='number of orders', mode='lines'))
 sales_sop.add_trace(go.Line(x=grouped_df.index, y=grouped_df['sales_per_order'], name='sales per order', mode='lines', line=dict(color='red')), 
@@ -233,11 +235,11 @@ sales_sop.update_layout(
         title='Sales per order'
     ),
     width=1230,
-    height=500,
+    height=400,
     legend=dict(
         orientation='h',         # horizontal
         yanchor='top',
-        y=-0.5,                  # adjust vertical position
+        y=-0.1,                  # adjust vertical position
         xanchor='center',
         x=0.5                    # center the legend
     )
