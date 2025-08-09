@@ -88,6 +88,7 @@ input_df = pd.DataFrame(data, index=[0])
 
 # loading in sales data for plots
 sales_df = pd.read_csv('data/processed/sales.csv', index_col=0, parse_dates=True)
+sales_df['sales_per_order'] = sales_df['total_sales_normalized'] / sales_df['in_store_orders']
 
 # define plotting functions 
 def make_line_graph(input_df, range, width=400, height=300): 
@@ -218,7 +219,6 @@ sales_trend_graph.update_yaxes( gridcolor="lightgrey")
 
 #  line graph - number of orders vs sales per order trend 
 
-sales_df['sales_per_order'] = sales_df['total_sales_normalized'] / sales_df['in_store_orders']
 grouped_df = sales_df.resample(agg).mean(numeric_only=True).round(1)
 sales_sop = make_subplots(specs=[[{"secondary_y": True}]])
 sales_sop.add_trace(go.Line(x=grouped_df.index, y=grouped_df['in_store_orders'], name='number of orders', mode='lines'))
