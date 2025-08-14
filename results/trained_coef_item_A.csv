@@ -1,0 +1,17 @@
+features,coefficients
+day_of_week_Saturday,979.0
+day_of_week_Sunday,817.0
+is_holiday_True,816.0
+season_Summer,582.0
+day_of_week_Friday,536.0
+season_Spring,214.0
+season_Fall,77.0
+day_of_week_Wednesday,61.0
+day_of_week_Tuesday,27.0
+day_of_week_Thursday,20.0
+is_long_weekend_True,-2.0
+rain,-19.0
+is_HCF_True,-23.0
+snow,-24.0
+hours_opened,-36.0
+avg_temperature,-105.0

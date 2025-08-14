@@ -1,0 +1,8 @@
+day_of_week,item_A_sales,y_pred,prediction_error,error_percentage
+Monday,1952.67,2025.39,72.72,0.037
+Tuesday,1904.6,1834.88,-69.72,-0.037
+Wednesday,2060.1,1868.55,-191.56,-0.093
+Thursday,2128.45,1997.7,-130.75,-0.061
+Friday,2643.41,2493.1,-150.31,-0.057
+Saturday,3018.92,2735.67,-283.25,-0.094
+Sunday,2898.9,2629.33,-269.57,-0.093

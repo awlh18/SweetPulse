@@ -1,0 +1,8 @@
+day_of_week,total_sales_normalized,y_pred,prediction_error,error_percentage
+Monday,6434.42,6655.85,221.43,0.034
+Tuesday,6239.25,6212.91,-26.34,-0.004
+Wednesday,6465.93,6362.04,-103.89,-0.016
+Thursday,6700.23,6658.19,-42.04,-0.006
+Friday,8325.26,8068.78,-256.47,-0.031
+Saturday,8966.42,8596.3,-370.12,-0.041
+Sunday,8593.57,8239.35,-354.22,-0.041

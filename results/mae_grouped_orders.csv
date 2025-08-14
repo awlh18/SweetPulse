@@ -1,0 +1,8 @@
+day_of_week,in_store_orders,y_pred,prediction_error,error_percentage
+Monday,424.93,419.65,-5.28,-0.012
+Tuesday,420.53,406.14,-14.38,-0.034
+Wednesday,411.6,402.15,-9.45,-0.023
+Thursday,434.73,423.33,-11.4,-0.026
+Friday,515.22,513.04,-2.18,-0.004
+Saturday,559.34,530.31,-29.02,-0.052
+Sunday,543.25,506.63,-36.62,-0.067
