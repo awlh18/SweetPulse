@@ -6,9 +6,10 @@
 
 Additionally, the model diagnostic pages help users monitor the performance and validity of each forecasting model, supporting future retraining and model selection.
 
-### Demo
-![demo](gif/demo.gif)
+As part of the project, an exploratory data analysis was conducted to identify key revenue drivers, analyze sales trends, and quantify the impact of weather and business campaigns on sales. A report prepared with anonymized data is available here.
 
+### Dashboard demo 
+![demo](gif/demo.gif)
 
 ## How to Get Started Locally
 
