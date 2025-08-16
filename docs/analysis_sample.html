@@ -15555,27 +15555,41 @@ Notes:
 </div>
 <p><br></p>
 <p><strong>Base case</strong>: Average item A sales = <strong>$1727.95</strong> on a regular Monday in Winter with no rain and no snow.</p>
-<p><code>is_long_weekend</code> - No significant impact on sales.</p>
-<p><code>is_holiday</code> - All else being equal, on average, sales during on a holiday is roughly <strong>36%</strong> higher than the base case.</p>
-<p><code>season</code> - No significant difference in item A sales between Winter and Fall.</p>
+<p><code>is_long_weekend</code></p>
 <ul>
-<li>Compared to Winter, and all else being equal:
+<li>No significant impact on sales.</li>
+</ul>
+<p><code>is_holiday</code></p>
+<ul>
+<li>All else being equal, on average, sales on a holiday is roughly <strong>36%</strong> higher than the base case.</li>
+</ul>
+<p><code>season</code></p>
+<ul>
+<li><p>No significant difference in item A sales between Winter and Fall.</p></li>
+<li><p>Compared to Winter, and all else being equal:</p>
 <ul>
 <li>Spring sales are <strong>10%</strong> higher</li>
 <li>Summer sales are <strong>17%</strong> higher</li>
 </ul></li>
 </ul>
-<p><code>day_of_week</code> - No significant difference in item A sales between the weekdays (Mon - Thurs).</p>
+<p><code>day_of_week</code></p>
 <ul>
-<li>Relative to Monday, and all else being equal:
+<li><p>No significant difference in item A sales between the weekdays (Mon - Thurs).</p></li>
+<li><p>Relative to Monday, and all else being equal:</p>
 <ul>
 <li>Friday sales are <strong>26%</strong> higher</li>
 <li>Saturday sales are <strong>50%</strong> higher</li>
 <li>Sunday sales are <strong>42%</strong> higher</li>
 </ul></li>
 </ul>
-<p><code>rain</code> - No significant impact on sales.</p>
-<p><code>snow</code> - No significant impact on sales.</p>
+<p><code>rain</code></p>
+<ul>
+<li>No significant impact on sales.</li>
+</ul>
+<p><code>snow</code></p>
+<ul>
+<li>No significant impact on sales.</li>
+</ul>
 <p><strong>For example:</strong></p>
 <p>Average item A sales on a Friday in the Summer with no rain and no snow = $1727.95 x 1.26 x 1.17 = <strong>$2547.34</strong></p>
 <p><br></p>
@@ -15750,20 +15764,41 @@ Notes:
 </div>
 <p><br></p>
 <p><strong>Base case</strong>: Average item B sales = <strong>$1554.34</strong> on a regular Monday in Winter with no rain and no snow.</p>
-<p><code>is_long_weekend</code> - All else being equal, on average, sales are approximately <strong>10%</strong> higher on long weekends compared to regular weekends.</p>
-<p><code>is_holiday</code> - All else being equal, on average, sales during on a holiday is roughly <strong>31%</strong> higher than the base case.</p>
-<p><code>season</code> - Compared to Winter, and all else being equal: - Spring sales are <strong>17%</strong> higher - Summer sales are <strong>55%</strong> higher - Fall sales are <strong>5%</strong> higher</p>
-<p><code>day_of_week</code> - No significant difference in item B sales between the weekdays (Mon - Thurs).</p>
+<p><code>is_long_weekend</code></p>
 <ul>
-<li>Relative to Monday, and all else being equal:
+<li>All else being equal, on average, sales are approximately <strong>10%</strong> higher on long weekends compared to regular weekends.</li>
+</ul>
+<p><code>is_holiday</code></p>
+<ul>
+<li>All else being equal, on average, sales on a holiday is roughly <strong>31%</strong> higher than the base case.</li>
+</ul>
+<p><code>season</code></p>
+<ul>
+<li>Compared to Winter, and all else being equal:
+<ul>
+<li>Spring sales are <strong>17%</strong> higher</li>
+<li>Summer sales are <strong>55%</strong> higher</li>
+<li>Fall sales are <strong>5%</strong> higher</li>
+</ul></li>
+</ul>
+<p><code>day_of_week</code></p>
+<ul>
+<li><p>No significant difference in item B sales between the weekdays (Mon - Thurs).</p></li>
+<li><p>Relative to Monday, and all else being equal:</p>
 <ul>
 <li>Friday sales are <strong>37%</strong> higher</li>
 <li>Saturday sales are <strong>55%</strong> higher</li>
 <li>Sunday sales are <strong>47%</strong> higher</li>
 </ul></li>
 </ul>
-<p><code>rain</code> - Each additional 1mm of rainfall is associated with a <strong>1%</strong> decrease in item B sales, all else being equal.</p>
-<p><code>snow</code> - Each additional 1mm of snowfall is associated with a <strong>3%</strong> decrease in item B sales, all else being equal.</p>
+<p><code>rain</code></p>
+<ul>
+<li>Each additional 1mm of rainfall is associated with a <strong>1%</strong> decrease in item B sales, all else being equal.</li>
+</ul>
+<p><code>snow</code></p>
+<ul>
+<li>Each additional 1mm of snowfall is associated with a <strong>3%</strong> decrease in item B sales, all else being equal.</li>
+</ul>
 <p><strong>For example:</strong></p>
 <p>Average item B sales on a Friday in the Fall with 3mm of rain and no snow = $1554.34 x 1.37 x 1.05 x 0.99^3 = <strong>$2169.51</strong></p>
 <p><br></p>
@@ -15931,27 +15966,41 @@ Notes:
 </div>
 <p><br></p>
 <p><strong>Base case</strong>: Average item C sales = <strong>$1136.75</strong> on a regular Monday in Winter with no rain and no snow.</p>
-<p><code>is_long_weekend</code> - No significant impact on sales.</p>
-<p><code>is_holiday</code> - All else being equal, on average, sales during on a holiday is roughly <strong>10%</strong> higher than the base case.</p>
-<p><code>season</code> - No significant difference in item C sales between Winter and Fall.</p>
+<p><code>is_long_weekend</code></p>
 <ul>
-<li>Compared to Winter, and all else being equal:
+<li>No significant impact on sales.</li>
+</ul>
+<p><code>is_holiday</code></p>
+<ul>
+<li>All else being equal, on average, sales on a holiday is roughly <strong>10%</strong> higher than the base case.</li>
+</ul>
+<p><code>season</code></p>
+<ul>
+<li><p>No significant difference in item C sales between Winter and Fall.</p></li>
+<li><p>Compared to Winter, and all else being equal:</p>
 <ul>
 <li>Spring sales are <strong>8%</strong> higher</li>
 <li>Summer sales are <strong>9%</strong> higher</li>
 </ul></li>
 </ul>
-<p><code>day_of_week</code> - No significant difference in item C sales between the weekdays (Mon - Thurs).</p>
+<p><code>day_of_week</code></p>
 <ul>
-<li>Relative to Monday, and all else being equal:
+<li><p>No significant difference in item C sales between the weekdays (Mon - Thurs).</p></li>
+<li><p>Relative to Monday, and all else being equal:</p>
 <ul>
 <li>Friday sales are <strong>9%</strong> higher</li>
 <li>Saturday sales are <strong>16%</strong> higher</li>
 <li>Sunday sales are <strong>13%</strong> higher</li>
 </ul></li>
 </ul>
-<p><code>rain</code> - No significant impact on sales.</p>
-<p><code>snow</code> - No significant impact on sales.</p>
+<p><code>rain</code></p>
+<ul>
+<li>No significant impact on sales.</li>
+</ul>
+<p><code>snow</code></p>
+<ul>
+<li>No significant impact on sales.</li>
+</ul>
 <p><strong>For example:</strong></p>
 <p>Average item C sales on a Sunday in the Spring with no snow = $1136.75 x 1.13 x 1.08 = <strong>$1387.29</strong></p>
 <p><strong>Note:</strong> It’s worth noting however that the adjusted R-squared of the regression model is lower compared to the item A and item B models. This suggests certain important variables that explain item C sales are missing. Further investigation is warranted.</p>
@@ -16338,7 +16387,7 @@ p-value: 0.038</code></pre>
 <section id="appendix-3-regression-models---residual-plots" class="level2">
 <h2 class="anchored" data-anchor-id="appendix-3-regression-models---residual-plots">Appendix 3: Regression models - residual plots</h2>
 <p><a href="#0" style="font-family: &#39;Arial&#39;, sans-serif; font-size: 12px; color: blue;">Back to top</a></p>
-<p>We examine the residuals of our regression models to check for any discernible patterns. A random scatter of residuals, with no clear pattern, indicates that the model adequately captures the underlying relationships in the data and that the assumption of linearity between the target variable and independent variables is likely satisfied.</p>
+<p>We examine the residuals of our regression models to check for any discernible patterns. A random scatter of residuals with no clear pattern indicates that the model adequately captures the underlying relationships in the data and that the assumption of linearity between the target variable and independent variables is likely satisfied.</p>
 <section id="hcf---item-a-model" class="level4">
 <h4 class="anchored" data-anchor-id="hcf---item-a-model">HCF - item A model</h4>
 <div id="cell-99" class="cell" data-execution_count="492">
