@@ -5,7 +5,7 @@
 **SweetPulse** is a forecasting and analytics tool designed for a Vancouver-based dessert cafe. It delivers real-time sales and order volume predictions based on weather forecasts and other operational inputs to inform daily operations planning. SweetPulse also tracks key business metrics and provides various interactive visualizations/graphs at an item level, enabling users to uncover actionable sales patterns.
 
 ### Exploratory data analysis 
-As part of the project, an exploratory data analysis was conducted to identify key revenue drivers, analyze sales trends, and quantify the impact of weather and business campaigns on sales. A sample report prepared with anonymized data is available [here.](https://awlh18.github.io/SweetPulse/analysis_sample.html)
+As part of the project, an exploratory data analysis was conducted to identify key revenue drivers, analyze sales trends, and quantify the impact of weather and business campaigns on sales. A report prepared with anonymized and modified data is available [here](https://awlh18.github.io/SweetPulse/analysis_sample.html).
 
 ### Dashboard demo 
 ![demo](gif/demo.gif)
